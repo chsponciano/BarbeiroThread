@@ -1,11 +1,11 @@
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
+ * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Slva
  */
-
 public class executor {
 
     public static void main(String[] args) {

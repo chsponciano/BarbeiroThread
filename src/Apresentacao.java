@@ -1,19 +1,24 @@
+
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
  */
-
 public class Apresentacao extends javax.swing.JFrame {
 
-    Barbearia barbearia;
+    private static final long serialVersionUID = 8052092780671232341L;
+
+    static Barbearia barbearia;
     private final Color OCULPADO = new Color(204, 0, 0);
     private final Color LIVRE = new Color(0, 204, 0);
     int qtd;
 
     private void controleTela() {
         pBarbeiro.setBackground((barbearia.isDormindo()) ? LIVRE : OCULPADO);
+        
         qtd = barbearia.getQtdEspera();
         pCad1.setBackground((qtd >= 1) ? OCULPADO : LIVRE);
         pCad2.setBackground((qtd >= 2) ? OCULPADO : LIVRE);
@@ -21,27 +26,45 @@ public class Apresentacao extends javax.swing.JFrame {
         pCad4.setBackground((qtd >= 4) ? OCULPADO : LIVRE);
         pCad5.setBackground((qtd >= 5) ? OCULPADO : LIVRE);
         pCad6.setBackground((qtd == 6) ? OCULPADO : LIVRE);
+        
+        this.taClienteEmbora.setText(barbearia.getForaEmboraSemAtendimento());
+        
         this.repaint();
     }
 
-    Runnable paint = () -> {
-        while(true){
-            controleTela();
+    static class ControleFrame implements Runnable {
+
+        Apresentacao a;
+
+        public ControleFrame(Apresentacao a) {
+            this.a = a;
         }
-    };
+
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    a.controleTela();
+                    Thread.sleep(100);
+                    // System.out.println("Apresentacao.ControleFrame.run()");
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Apresentacao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     {
-        barbearia = new Barbearia();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
     }
-
 
     /**
      * Creates new form Apresentacao
      */
     public Apresentacao() {
         initComponents();
+        barbearia = new Barbearia();
     }
 
     /**
@@ -261,7 +284,14 @@ public class Apresentacao extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    
+        int valor = (int) sNumClientes.getValue();
+
+        Thread cliente;
+
+        for (int i = 0; i < valor; i++) {
+            cliente = new Thread(new Cliente(barbearia));
+            cliente.start();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -294,7 +324,14 @@ public class Apresentacao extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Apresentacao().setVisible(true);
+                Apresentacao tela = new Apresentacao();
+                tela.setVisible(true);
+
+                Thread controleGUI = new Thread(new ControleFrame(tela));
+                Thread barbeiro = new Thread(new Barbeiro(barbearia));
+
+                controleGUI.start();
+                barbeiro.start();
             }
         });
     }

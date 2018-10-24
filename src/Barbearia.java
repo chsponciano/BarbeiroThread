@@ -16,6 +16,12 @@ public class Barbearia {
     private boolean dormindo; //Atributo de controle do Barbeiro
     private Cliente atual; // Cliente atual sendo modificado
 
+    private String foraEmboraSemAtendimento = "";
+
+    public String getForaEmboraSemAtendimento() {
+        return foraEmboraSemAtendimento;
+    }
+    
     //Inicializado atributos
     {
         LIMITE = 6;
@@ -29,6 +35,7 @@ public class Barbearia {
         try {
             while (espera.isEmpty()) {
                 System.out.println("Barbeiro está dormindo");
+                dormindo = true;
                 wait();
             }
 
@@ -56,6 +63,7 @@ public class Barbearia {
                 System.out.println(c + " entrou na barbearia e sentou");
             } else {
                 System.out.println(c + " entrou na barbearia e foi embora");
+                this.foraEmboraSemAtendimento += c + "\n";
             }
 
             while (espera.size() < LIMITE) {
