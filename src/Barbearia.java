@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
+ */
 
 import java.util.concurrent.LinkedBlockingQueue;
 
