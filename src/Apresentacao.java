@@ -1,19 +1,47 @@
+
+import java.awt.Color;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Carlos
  */
 public class Apresentacao extends javax.swing.JFrame {
 
+    Barbearia barbearia;
+    private final Color OCULPADO = new Color(204, 0, 0);
+    private final Color LIVRE = new Color(0, 204, 0);
+    int qtd;
+
+    private void controleTela() {
+        pBarbeiro.setBackground((barbearia.isDormindo()) ? LIVRE : OCULPADO);
+        qtd = barbearia.getQtdEspera();
+        pCad1.setBackground((qtd >= 1) ? OCULPADO : LIVRE);
+        pCad2.setBackground((qtd >= 2) ? OCULPADO : LIVRE);
+        pCad3.setBackground((qtd >= 3) ? OCULPADO : LIVRE);
+        pCad4.setBackground((qtd >= 4) ? OCULPADO : LIVRE);
+        pCad5.setBackground((qtd >= 5) ? OCULPADO : LIVRE);
+        pCad6.setBackground((qtd == 6) ? OCULPADO : LIVRE);
+        this.repaint();
+    }
+
+    Runnable paint = () -> {
+        while(true){
+            controleTela();
+        }
+    };
+
     {
+        barbearia = new Barbearia();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
     }
+
+
     /**
      * Creates new form Apresentacao
      */
@@ -162,6 +190,11 @@ public class Apresentacao extends javax.swing.JFrame {
         jScrollPane1.setViewportView(taClienteEmbora);
 
         jButton1.setText("Inserir Clientes");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Finalizar");
 
@@ -231,6 +264,11 @@ public class Apresentacao extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -272,7 +310,6 @@ public class Apresentacao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pBarbeiro;
     private javax.swing.JPanel pCad1;
