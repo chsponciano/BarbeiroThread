@@ -12,7 +12,6 @@ public class Barbearia implements IBarbearia {
 
     public Semafaro cliente = new Semafaro(0);
     public Semafaro barbeiro = new Semafaro(0);
-    public Semafaro mutex = new Semafaro(1);
     public List<Cliente> espera = new ArrayList<>();
     public final int LIMITE = 6;
     public boolean isDormindo = true;

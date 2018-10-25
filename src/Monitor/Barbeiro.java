@@ -14,6 +14,10 @@ public class Barbeiro extends Thread {
         this.cortar = true;
     }
 
+    /**
+     * Em intervalos de 500 ms vai na barbearia e verifica se existe um novo
+     * cliente, caso não exista ele dorme, caso contrário volta e repete o loop
+     */
     public void run() {
         try {
             while (cortar) {

@@ -51,7 +51,6 @@ public class Apresentacao extends javax.swing.JFrame {
                 while (true) {
                     a.controleTela();
                     Thread.sleep(100);
-                    // System.out.println("Apresentacao.ControleFrame.run()");
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(Apresentacao.class.getName()).log(Level.SEVERE, null, ex);
@@ -315,6 +314,7 @@ public class Apresentacao extends javax.swing.JFrame {
             } else {
                 cliente = new Thread(new Monitor.Cliente((Monitor.Barbearia) barbearia));
             }
+            
             cliente.start();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
