@@ -15,6 +15,10 @@ public class Cliente extends Thread {
         this.nome = "Cliente " + (contador++);
     }
 
+    /**
+     * Vai na barbearia e ve se tem um lugar, caso não tenha sai, caso tenha,
+     * senta, e caso o barbeiro esteja dormindo, acorda ele
+     */
     public void run() {
         try {
             barbearia.verificarEspera(this);

@@ -19,18 +19,25 @@ public class Cliente extends Thread {
         return this.nome;
     }
 
+    /**
+     * Adiciona esse cliente na fila do barbeiro se houver lugar
+     * e da um up no semaforo de cliente
+     * 
+     * caso nao houver lugar, simplemente marca como mais um cliente
+     * que foi embora
+     */
     private void controle() {
-        barbearia.mutex.down();
+//        barbearia.mutex.down();
 
         if (barbearia.espera.size() < barbearia.LIMITE) {
             barbearia.espera.add(this);
 
             barbearia.cliente.up();
-            barbearia.mutex.up();
+//            barbearia.mutex.up();
 
             System.out.println(this + " entrou na barbearia e sentou");
         } else {
-            barbearia.mutex.up();
+//            barbearia.mutex.up();
             barbearia.setFoiEmboraSemAtendimento(this + "\n");
             System.out.println(this + " entrou na barbearia e foi embora");
         }

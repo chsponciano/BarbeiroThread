@@ -15,6 +15,10 @@ public class Semafaro {
         this.count = count;
     }
 
+    /**
+     * Decrementa o contador se ele for maior ou igual a 0, caso contrário para
+     * a thread e espera o método up() ser chamado
+     */
     public synchronized void down() {
         try {
             if (count <= 0) {
@@ -26,8 +30,12 @@ public class Semafaro {
         }
     }
 
+    /**
+     * Incremente o contador e notifica qualquer thread que possa ter sido parada
+     * no descrementador
+     */
     public synchronized void up() {
-        notify();
         count++;
+        notify();
     }
 }
