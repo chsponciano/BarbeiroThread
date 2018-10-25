@@ -1,36 +1,38 @@
+package Monitor;
+
 /**
  *
- * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
+ * @author Carlos Henrique Ponciano da Silva && Vinicius Luis da Silva
  */
+import Util.IBarbearia;
+import java.util.ArrayDeque;
 
-import java.util.concurrent.LinkedBlockingQueue;
-
-public class Barbearia {
+public class Barbearia implements IBarbearia{
 
     private final int LIMITE; // Limite das cadeiras
     
-    //Fila sincronizada, sendo um memoria compartilhada
-    //Usada também para aplicar a regra de monitoramento
-    private LinkedBlockingQueue<Cliente> espera; 
+    //Memoria compartilhada
+    private ArrayDeque<Cliente> espera; 
     
     private boolean dormindo; //Atributo de controle do Barbeiro
     private Cliente atual; // Cliente atual sendo modificado
 
-    private String foraEmboraSemAtendimento = "";
-
-    public String getForaEmboraSemAtendimento() {
-        return foraEmboraSemAtendimento;
-    }
+    //Saida de clientes que foram embora sem atendimento
+    private String foiEmboraSemAtendimento = "";
     
     //Inicializado atributos
     {
         LIMITE = 6;
-        espera = new LinkedBlockingQueue<>();
+        espera = new ArrayDeque<>();
         dormindo = true;
         atual = null;
     }
 
-    //Mecanismo de controle de notificação do barbeiro usando Semafaro;
+    public String getFoiEmboraSemAtendimento() {
+        return foiEmboraSemAtendimento;
+    }  
+    
+    //Metodo elaboraborado com Monitor para controle das funcoes do barbeiro e controle da fila
     public synchronized void verificarBarbeiro() {
         try {
             while (espera.isEmpty()) {
@@ -40,9 +42,9 @@ public class Barbearia {
             }
 
             if (!espera.isEmpty()) {
-                atual = espera.poll(); //Monitor compartilhado
+                atual = espera.poll(); //Memoria compartilhado
                 System.out.println(atual + " está sendo atendido");
-                Thread.sleep(500);
+                Thread.sleep(100);
                 System.out.println(atual + " foi embora");
             }
 
@@ -53,17 +55,17 @@ public class Barbearia {
     }
 
     
-    //Mecanismo de controle de inserção de clientes usando Semafaro;
+    //Metodo elaboraborado com Monitor para verificar e controle a entrada de clientes na fila
     public synchronized void verificarEspera(Cliente c) {
         try {
             if (espera.size() < LIMITE) {
-                espera.add(c); //Monitor compartilhado
+                espera.add(c); //Memoria compartilhado
                 System.out.println("Quantidade fila: " + getQtdEspera());
 
                 System.out.println(c + " entrou na barbearia e sentou");
             } else {
                 System.out.println(c + " entrou na barbearia e foi embora");
-                this.foraEmboraSemAtendimento += c + "\n";
+                this.foiEmboraSemAtendimento += c + "\n";
             }
 
             while (espera.size() < LIMITE) {

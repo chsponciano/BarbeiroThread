@@ -1,24 +1,29 @@
+package GUI;
 
+import Util.IBarbearia;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
- * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
+ * @author Carlos Henrique Ponciano da Silva && Vinicius Luis da Silva
  */
 public class Apresentacao extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8052092780671232341L;
 
-    static Barbearia barbearia;
+    private static IBarbearia barbearia;
+    private static int input;
     private final Color OCULPADO = new Color(204, 0, 0);
     private final Color LIVRE = new Color(0, 204, 0);
     int qtd;
 
     private void controleTela() {
         pBarbeiro.setBackground((barbearia.isDormindo()) ? LIVRE : OCULPADO);
-        
+
         qtd = barbearia.getQtdEspera();
         pCad1.setBackground((qtd >= 1) ? OCULPADO : LIVRE);
         pCad2.setBackground((qtd >= 2) ? OCULPADO : LIVRE);
@@ -26,9 +31,9 @@ public class Apresentacao extends javax.swing.JFrame {
         pCad4.setBackground((qtd >= 4) ? OCULPADO : LIVRE);
         pCad5.setBackground((qtd >= 5) ? OCULPADO : LIVRE);
         pCad6.setBackground((qtd == 6) ? OCULPADO : LIVRE);
-        
-        this.taClienteEmbora.setText(barbearia.getForaEmboraSemAtendimento());
-        
+
+        this.taClienteEmbora.setText(barbearia.getFoiEmboraSemAtendimento());
+
         this.repaint();
     }
 
@@ -64,7 +69,6 @@ public class Apresentacao extends javax.swing.JFrame {
      */
     public Apresentacao() {
         initComponents();
-        barbearia = new Barbearia();
     }
 
     /**
@@ -76,6 +80,7 @@ public class Apresentacao extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
         pCad1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -91,6 +96,17 @@ public class Apresentacao extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         sNumClientes = new javax.swing.JSpinner();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -294,7 +310,11 @@ public class Apresentacao extends javax.swing.JFrame {
         Thread cliente;
 
         for (int i = 0; i < valor; i++) {
-            cliente = new Thread(new Cliente(barbearia));
+            if (input == 0) {
+                cliente = new Thread(new Semafaro.Cliente((Semafaro.Barbearia) barbearia));
+            } else {
+                cliente = new Thread(new Monitor.Cliente((Monitor.Barbearia) barbearia));
+            }
             cliente.start();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -308,47 +328,64 @@ public class Apresentacao extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+        UIManager.put("OptionPane.cancelButtonText", "Cancelar");
+        UIManager.put("OptionPane.noButtonText", "Monitor");
+        UIManager.put("OptionPane.yesButtonText", "Semafáro");
+
+        input = JOptionPane.showConfirmDialog(null, "Tipo de execução");
+        if (input == 0 || input == 1) {
+            /* Set the Nimbus look and feel */ //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+             */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (ClassNotFoundException ex) {
+                java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Apresentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //</editor-fold>
+
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Apresentacao tela = new Apresentacao();
+                    tela.setVisible(true);
+
+                    Thread controleGUI = new Thread(new ControleFrame(tela));
+                    Thread barbeiro;
+
+                    if (input == 0) {
+                        barbearia = new Semafaro.Barbearia();
+                        barbeiro = new Semafaro.Barbeiro((Semafaro.Barbearia) barbearia);
+                    } else {
+                        barbearia = new Monitor.Barbearia();
+                        barbeiro = new Monitor.Barbeiro((Monitor.Barbearia) barbearia);
+                    }
+
+                    controleGUI.start();
+                    barbeiro.start();
+                }
+            });
+        } else {
+            System.exit(0);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Apresentacao tela = new Apresentacao();
-                tela.setVisible(true);
-
-                Thread controleGUI = new Thread(new ControleFrame(tela));
-                Thread barbeiro = new Thread(new Barbeiro(barbearia));
-
-                controleGUI.start();
-                barbeiro.start();
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

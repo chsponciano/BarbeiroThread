@@ -1,8 +1,9 @@
+package Monitor;
+
 /**
  *
- * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
+ * @author Carlos Henrique Ponciano da Silva && Vinicius Luis da Silva
  */
-
 public class Cliente extends Thread {
 
     private Barbearia barbearia;

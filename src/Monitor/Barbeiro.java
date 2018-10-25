@@ -1,8 +1,9 @@
+package Monitor;
+
 /**
  *
- * @author Carlso Henrique Ponciano da Silva && Vinicius Luis da Silva
+ * @author Carlos Henrique Ponciano da Silva && Vinicius Luis da Silva
  */
-
 public class Barbeiro extends Thread {
 
     private Barbearia barbearia;
@@ -16,7 +17,7 @@ public class Barbeiro extends Thread {
     public void run() {
         try {
             while (cortar) {
-                sleep(5000);
+                sleep(500);
                 barbearia.verificarBarbeiro();
             }
         } catch (Exception e) {
